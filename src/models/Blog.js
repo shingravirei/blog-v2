@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const { MONGODB_URI } = require('../config/utils');
+const { MONGODB_URI } = require('../config/env-vars');
 
 const blogSchema = mongoose.Schema({
     title: String,
