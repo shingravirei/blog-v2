@@ -4,8 +4,9 @@
     "description": "A simple Blog",
     "main": "server.js",
     "scripts": {
-        "server": "nodemon ./src/server",
-        "test": "jest"
+        "start": "cross-env node NODE_ENV=production ./src/server.js",
+        "server": "cross-env nodemon NODE_ENV=development ./src/server.js",
+        "test": "cross-env NODE_ENV=test jest --verbose --runInBand"
     },
     "keywords": [
         "blog"
@@ -20,6 +21,7 @@
         "mongoose": "^5.9.1"
     },
     "devDependencies": {
+        "cross-env": "^7.0.0",
         "jest": "^25.1.0",
         "nodemon": "^2.0.2"
     }
