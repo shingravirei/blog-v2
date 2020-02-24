@@ -10,7 +10,9 @@ const blogSchema = mongoose.Schema({
 
 mongoose.connect(MONGODB_URI, {
     useNewUrlParser: true,
-    useUnifiedTopology: true
+    useUnifiedTopology: true,
+    useCreateIndex: true,
+    useFindAndModify: false
 });
 
 module.exports = mongoose.model('Blog', blogSchema);
