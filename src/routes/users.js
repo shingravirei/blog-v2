@@ -4,7 +4,11 @@ const User = require('../models/User');
 
 Router.get('/users', async (req, res, next) => {
     try {
-        const users = await User.find({}).populate('blogs');
+        const users = await User.find({}).populate('blogs', {
+            title: 1,
+            url: 1,
+            author: 1
+        });
 
         res.status(200).send(users);
     } catch (err) {
