@@ -60,10 +60,16 @@ Router.post('/blogs', async (req, res, next) => {
 });
 
 Router.delete('/blogs/:id', async (req, res, next) => {
-    const { id } = req.params;
+    const token = req.token;
 
     try {
-        await Blog.findByIdAndDelete({ _id: id });
+        const decodedToken = jwt.verify(token, SECRET);
+
+        if (!token || !decodedToken.id) {
+            throw new Error('missing id');
+        }
+
+        await Blog.findByIdAndDelete({ _id: decodedToken.id });
 
         res.status(204).end();
     } catch (err) {
