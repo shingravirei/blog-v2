@@ -4,7 +4,7 @@ const User = require('../models/User');
 
 Router.get('/users', async (req, res, next) => {
     try {
-        const users = await User.find({});
+        const users = await User.find({}).populate('blogs');
 
         res.status(200).send(users);
     } catch (err) {
