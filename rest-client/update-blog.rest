@@ -1,9 +1,0 @@
-PUT http://localhost:3000/api/blogs/5e52ce43f596ca21c09c082c
-content-type: application/json
-
-{
-    "title": "Kappa Blog",
-    "author": "kappa",
-    "url": "kappa.com",
-    "likes": 15
-}

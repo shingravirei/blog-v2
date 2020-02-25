@@ -1,0 +1,30 @@
+POST http://localhost:3000/api/blogs
+content-type: application/json
+
+{
+    "title": "ttttttt",
+    "author": "-ttttttttt--",
+    "url": "kappa.com",
+    "likes": "2"
+}
+
+###
+
+GET  http://localhost:3000/api/blogs
+
+### 
+
+PUT http://localhost:3000/api/blogs/5e52ce43f596ca21c09c082c
+content-type: application/json
+
+{
+    "title": "Kappa Blog",
+    "author": "kappa",
+    "url": "kappa.com",
+    "likes": 15
+}
+
+
+###
+
+DELETE http://localhost:3000/api/blogs/5e52c503e828a30960094dd2
