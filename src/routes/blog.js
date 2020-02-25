@@ -1,6 +1,8 @@
 const Router = require('express').Router();
+const jwt = require('jsonwebtoken');
 const Blog = require('../models/Blog');
 const User = require('../models/User');
+const { SECRET } = require('../config/env-vars');
 
 Router.get('/blogs', async (req, res) => {
     try {
@@ -16,12 +18,20 @@ Router.get('/blogs', async (req, res) => {
     }
 });
 
-Router.post('/blogs', async (req, res) => {
+Router.post('/blogs', async (req, res, next) => {
+    let { title, author, url, likes } = req.body;
+
+    const token = req.token;
+
     try {
-        let { title, author, url, likes } = req.body;
+        const decodedToken = jwt.verify(token, SECRET);
+
+        if (!token || !decodedToken.id) {
+            throw new Error('missing id');
+        }
 
         if (typeof title === 'undefined' || typeof url === 'undefined') {
-            return res.status(400).end();
+            throw new Error('title and/or url missing');
         }
 
         if (typeof likes === 'undefined') {
@@ -45,29 +55,27 @@ Router.post('/blogs', async (req, res) => {
 
         res.status(201).json(result);
     } catch (err) {
-        console.log('Error', err);
-        res.status(400).end();
+        next(err);
     }
 });
 
-Router.delete('/blogs/:id', async (req, res) => {
-    try {
-        const { id } = req.params;
+Router.delete('/blogs/:id', async (req, res, next) => {
+    const { id } = req.params;
 
+    try {
         await Blog.findByIdAndDelete({ _id: id });
 
         res.status(204).end();
     } catch (err) {
-        console.log(err);
-        res.status(400).end();
+        next(err);
     }
 });
 
-Router.put('/blogs/:id', async (req, res) => {
-    try {
-        const { id } = req.params;
-        const { title, author, url, likes } = req.body;
+Router.put('/blogs/:id', async (req, res, next) => {
+    const { id } = req.params;
+    const { title, author, url, likes } = req.body;
 
+    try {
         const updatedBlog = await Blog.findByIdAndUpdate(
             id,
             { title, author, url, likes },
@@ -76,8 +84,7 @@ Router.put('/blogs/:id', async (req, res) => {
 
         res.json(updatedBlog);
     } catch (err) {
-        console.log(err);
-        res.status(400).end();
+        next(err);
     }
 });
 
