@@ -6,7 +6,6 @@ const { SECRET } = require('../config/env-vars');
 
 Router.post('/', async (req, res, next) => {
     const { username, password } = req.body;
-    console.log(SECRET);
 
     try {
         const user = await User.findOne({ username });

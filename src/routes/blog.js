@@ -4,7 +4,7 @@ const Blog = require('../models/Blog');
 const User = require('../models/User');
 const { SECRET } = require('../config/env-vars');
 
-Router.get('/blogs', async (req, res) => {
+Router.get('/blogs', async (req, res, next) => {
     try {
         const blogs = await Blog.find({}).populate('user', {
             username: 1,
@@ -13,8 +13,25 @@ Router.get('/blogs', async (req, res) => {
 
         res.json(blogs);
     } catch (err) {
-        console.log('Error:', err);
-        res.status(400).end();
+        next(err);
+    }
+});
+
+Router.get('/blogs/:username', async (req, res, next) => {
+    const token = req.token;
+
+    try {
+        const decodedToken = jwt.verify(token, SECRET);
+
+        if (!token || !decodedToken.id) {
+            throw new Error('missing id');
+        }
+
+        const blogs = await User.find({ username: decodedToken.username });
+
+        res.json(blogs);
+    } catch (err) {
+        next(err);
     }
 });
 
@@ -38,7 +55,7 @@ Router.post('/blogs', async (req, res, next) => {
             likes = 0;
         }
 
-        const user = await User.findOne({});
+        const user = await User.findById({ _id: decodedToken.id });
 
         const blog = new Blog({
             title,
