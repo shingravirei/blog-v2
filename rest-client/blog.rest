@@ -16,17 +16,17 @@ Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkb
 
 ###
 
-GET  http://localhost:3000/api/blogs
+GET  http://localhost:3001/api/blogs
 
 ### 
 
-PUT http://localhost:3000/api/blogs/5e52ce43f596ca21c09c082c
+PUT http://localhost:3001/api/blogs/5e58221ba531750e90df8b18
 content-type: application/json
 
 {
-    "title": "Kappa Blog",
-    "author": "kappa",
-    "url": "kappa.com",
+    "title": "Test Post",
+    "author": "admin",
+    "url": "admin.com",
     "likes": 15
 }
 

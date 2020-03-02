@@ -78,6 +78,7 @@ Router.post('/blogs', async (req, res, next) => {
 
 Router.delete('/blogs/:id', async (req, res, next) => {
     const token = req.token;
+    const { id } = req.params;
 
     try {
         const decodedToken = jwt.verify(token, SECRET);
@@ -86,7 +87,7 @@ Router.delete('/blogs/:id', async (req, res, next) => {
             throw new Error('missing id');
         }
 
-        await Blog.findByIdAndDelete({ _id: decodedToken.id });
+        await Blog.findByIdAndDelete({ _id: id });
 
         res.status(204).end();
     } catch (err) {
@@ -99,6 +100,10 @@ Router.put('/blogs/:id', async (req, res, next) => {
     const { title, author, url, likes } = req.body;
 
     try {
+        if (!title || !author || !url || !likes) {
+            throw Error('Request data missing');
+        }
+
         const updatedBlog = await Blog.findByIdAndUpdate(
             id,
             { title, author, url, likes },
